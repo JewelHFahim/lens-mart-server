@@ -52,16 +52,32 @@ async function run(){
             res.send(result);
         })
 
+
+
         app.get('/lens', async(req, res)=>{
             const query = {};
             const lens = await lensCollection.find(query).toArray();
             res.send(lens);
         });
+        app.get('/lens/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await lensCollection.findOne(query);
+            res.send(result);
+        })
+
+
 
         app.get('/accessories', async(req, res)=>{
             const query = {};
             const accessories = await accessoriesCollection.find(query).toArray();
             res.send(accessories);
+        })
+        app.get('/accessories/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await accessoriesCollection.findOne(query);
+            res.send(result);
         })
 
         // Category end
