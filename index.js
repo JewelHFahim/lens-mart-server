@@ -44,6 +44,15 @@ async function run(){
             const cameras = await camerasCollection.find(query).toArray();
             res.send(cameras);
         });
+        app.post('/cameras', async(req, res)=>{
+            const products = req.body;
+            const product = {
+                products,
+                date: new Date().toISOString().substring(0, 10)
+            }
+            const result = await camerasCollection.insertOne(product);
+            res.send(result);
+        });
     
         app.get('/cameras/:id', async(req, res)=>{
             const id = req.params.id;
