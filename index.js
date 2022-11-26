@@ -18,6 +18,7 @@ async function run(){
     const camerasCollection = client.db("lensMart").collection("cameras");
     const lensCollection = client.db("lensMart").collection("lens");
     const accessoriesCollection = client.db("lensMart").collection("accessories");
+    const ordersCollection = client.db("lensMart").collection("orders");
     try{
         // USers
         app.post('/users', async(req, res)=>{
@@ -160,10 +161,29 @@ async function run(){
             const result = await accessoriesCollection.findOne(query);
             res.send(result);
         })
-
-
-
         // Category end
+
+        // order
+        app.post('/orders', async(req, res)=>{
+            const order = req.body;
+            const orders = {
+                order,
+                date: new Date().toISOString().substring(0, 10)
+            }
+            const result = await ordersCollection.insertOne(orders);
+            res.send(result);
+        })
+        app.get('/orders', async(req, res)=>{
+            const query = {};
+            const result = await ordersCollection.find(query).toArray();
+            res.send(result);
+        })
+        app.get('/orders', async(req, res)=>{
+            const email = req.params.email;
+            const query = {email: email};
+            const result = await ordersCollection.find(query).toArray();
+            res.send(result);
+        })
     }
     finally{
 
