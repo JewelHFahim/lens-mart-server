@@ -39,6 +39,10 @@ async function run(){
             const categories = await categoriesCollection.find(query).toArray();
             res.send(categories);
         });
+
+
+
+        // Camera
         app.get('/cameras', async(req, res)=>{
             const query = {};
             const cameras = await camerasCollection.find(query).toArray();
@@ -53,7 +57,6 @@ async function run(){
             const result = await camerasCollection.insertOne(product);
             res.send(result);
         });
-    
         app.get('/cameras/:id', async(req, res)=>{
             const id = req.params.id;
             const query = {_id: ObjectId(id)};
@@ -63,10 +66,20 @@ async function run(){
 
 
 
+        // Lens
         app.get('/lens', async(req, res)=>{
             const query = {};
             const lens = await lensCollection.find(query).toArray();
             res.send(lens);
+        });
+        app.post('/lens', async(req, res)=>{
+            const products = req.body;
+            const product = {
+                products,
+                date: new Date().toISOString().substring(0, 10)
+            }
+            const result = await lensCollection.insertOne(product);
+            res.send(result);
         });
         app.get('/lens/:id', async(req, res)=>{
             const id = req.params.id;
@@ -77,17 +90,29 @@ async function run(){
 
 
 
+        // Accessories
         app.get('/accessories', async(req, res)=>{
             const query = {};
             const accessories = await accessoriesCollection.find(query).toArray();
             res.send(accessories);
-        })
+        });
+        app.post('/accessories', async(req, res)=>{
+            const products = req.body;
+            const product = {
+                products,
+                date: new Date().toISOString().substring(0, 10)
+            }
+            const result = await accessoriesCollection.insertOne(product);
+            res.send(result);
+        });
         app.get('/accessories/:id', async(req, res)=>{
             const id = req.params.id;
             const query = {_id: ObjectId(id)};
             const result = await accessoriesCollection.findOne(query);
             res.send(result);
         })
+
+
 
         // Category end
     }

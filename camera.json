@@ -1,24 +1,8 @@
 [
   {
-    "title": "Yunteng VCT-668 Camera Tripod",
-    "img": "",
-    "des": "The Yunteng Vct-668 Tripod A flexible and small tripod with a built-in bubble level is included. This lightweight, a compact tripod is compatible with most cameras and digital video devices and features a quick-release head for a fast video-equipment connection. ",
-    "brand": "Yunteng ",
-    "condition": "used",
-    "duration": "2",
-    "price": "20",
-    "location": "Badda",
-    "number": "01911209322"
-  },
-  {
-    "title": "K&F Concept KF31.033 Professional Gimbal Head",
-    "img": "",
-    "des": "The K&F Concept KF31.033 Gimbal head is designed for sports tracking and may be used to photograph birds or sports events. The shooting template may be simply captured in all directions using a pan/tilt. Gimbal head K&F Concept KF31.033",
-    "brand": "K&F",
-    "condition": "used",
-    "duration": "",
-    "price": "75",
-    "location": "Gazipur",
-    "number": "01911209322"
+    "name": "Lens",
+    "img": "https://i.ibb.co/gJxvxRH/c6.jpg",
+    "des": "Shop the latest Nikon Z Series Mirrorless Cameras, DSLR and NIKKOR len…",
+    "cat": "cameras"
   }
 ]
