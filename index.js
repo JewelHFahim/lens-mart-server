@@ -50,6 +50,13 @@ async function run(){
 
 
         // Admin
+        app.get('/users/admin/:email', async(req, res)=>{
+            const email = req.params.email;
+            const query = { email };
+            const user = await userCollection.findOne(query);
+            res.send({ isAdmin: user?.role === 'admin'});
+          })
+
         app.put('/users/admin/:id', async(req, res)=>{
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
@@ -62,7 +69,15 @@ async function run(){
             const result = await userCollection.updateOne(filter, updatedDoc, options);
             res.send(result)
         })
+        
 
+        // Seller
+        app.get('/users/seller/:email', async(req, res)=>{
+            const email = req.params.email;
+            const query = { email };
+            const user = await userCollection.findOne(query);
+            res.send({ isAdmin: user?.role === 'Seller'});
+          })
 
 
 
