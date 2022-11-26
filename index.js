@@ -31,7 +31,41 @@ async function run(){
             const users = await userCollection.find(query).toArray();
             res.send(users);
         })
+        app.get('/users/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await userCollection.findOne(query);
+            res.send(result)
+        })
+        app.delete('/users/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await userCollection.deleteOne(query);
+            res.send(result)
+        })
         // Users End
+
+
+
+
+
+        // Admin
+        app.put('/users/admin/:id', async(req, res)=>{
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const options = { upert: true };
+            const updatedDoc = {
+                $set: {
+                    role: 'admin'
+                }
+            }
+            const result = await userCollection.updateOne(filter, updatedDoc, options);
+            res.send(result)
+        })
+
+
+
+
 
         // Category
         app.get('/categories',async (req, res)=>{
