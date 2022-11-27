@@ -19,6 +19,8 @@ async function run(){
     const lensCollection = client.db("lensMart").collection("lens");
     const accessoriesCollection = client.db("lensMart").collection("accessories");
     const ordersCollection = client.db("lensMart").collection("orders");
+
+
     try{
         // USers
         app.post('/users', async(req, res)=>{
@@ -165,25 +167,33 @@ async function run(){
 
         // order
         app.post('/orders', async(req, res)=>{
-            const order = req.body;
-            const orders = {
-                order,
-                date: new Date().toISOString().substring(0, 10)
-            }
+            const orders = req.body;
             const result = await ordersCollection.insertOne(orders);
-            res.send(result);
+            res.send(result)
         })
+   
         app.get('/orders', async(req, res)=>{
-            const query = {};
+            const email = req.query.email;
+            if(email){
+                const query = { email: email };
+                const result = await ordersCollection.find(query).toArray();
+                res.send(result);
+                return;
+            }
+            else{
+                const query = {};
+                const result = await ordersCollection.find(query).toArray();
+                res.send(result);
+            }
+        })
+
+        app.get('/orders', async(req, res)=>{
+            const query = { };
             const result = await ordersCollection.find(query).toArray();
             res.send(result);
         })
-        app.get('/orders', async(req, res)=>{
-            const email = req.params.email;
-            const query = {email: email};
-            const result = await ordersCollection.find(query).toArray();
-            res.send(result);
-        })
+        
+     
     }
     finally{
 
