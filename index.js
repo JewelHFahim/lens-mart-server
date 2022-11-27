@@ -69,6 +69,7 @@ async function run(){
             const result = await userCollection.updateOne(filter, updatedDoc, options);
             res.send(result)
         })
+
         // Seller
         app.get('/users/seller/:email', async(req, res)=>{
             const email = req.params.email;
@@ -76,6 +77,7 @@ async function run(){
             const user = await userCollection.findOne(query);
             res.send({ isAdmin: user?.role === 'Seller'});
           })
+
         //   Buyer
         app.get('/users/buyer/:email', async(req, res)=>{
             const email = req.params.email;
@@ -101,6 +103,17 @@ async function run(){
             const cameras = await camerasCollection.find(query).toArray();
             res.send(cameras);
         });
+
+        // app.get('/cameras', async(req, res)=>{
+        //     const query = {};
+        //     const cameras =  camerasCollection.find({seller: {$elemMatch: {seller: 'Alam Khan'}}})
+        //     res.send(cameras);
+        // });
+
+
+        // find({awards: {$elemMatch: {award:'National Medal', year:1975}}})
+        // find({seller: {$elemMatch: {seller: 'Alam Khan'}}})
+
         app.post('/cameras', async(req, res)=>{
             const products = req.body;
             const product = {
@@ -189,11 +202,6 @@ async function run(){
                 const result = await ordersCollection.find(query).toArray();
                 res.send(result);
             }
-        })
-        app.get('/orders', async(req, res)=>{
-            const query = { };
-            const result = await ordersCollection.find(query).toArray();
-            res.send(result);
         })
         
      
