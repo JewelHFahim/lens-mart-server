@@ -22,13 +22,13 @@ async function run(){
 
 
     try{
-        // USers
+
+        // Users
         app.post('/users', async(req, res)=>{
             const user = req.body;
             const result = await userCollection.insertOne(user);
             res.send(result)
         })
-
         app.get('/users', async(req, res)=>{
             const query = {};
             const users = await userCollection.find(query).toArray();
@@ -46,9 +46,7 @@ async function run(){
             const result = await userCollection.deleteOne(query);
             res.send(result)
         })
-        // Users End
-
-
+        
 
 
 
@@ -59,7 +57,6 @@ async function run(){
             const user = await userCollection.findOne(query);
             res.send({ isAdmin: user?.role === 'admin'});
           })
-
         app.put('/users/admin/:id', async(req, res)=>{
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
@@ -72,8 +69,6 @@ async function run(){
             const result = await userCollection.updateOne(filter, updatedDoc, options);
             res.send(result)
         })
-        
-
         // Seller
         app.get('/users/seller/:email', async(req, res)=>{
             const email = req.params.email;
@@ -81,7 +76,13 @@ async function run(){
             const user = await userCollection.findOne(query);
             res.send({ isAdmin: user?.role === 'Seller'});
           })
-
+        //   Buyer
+        app.get('/users/buyer/:email', async(req, res)=>{
+            const email = req.params.email;
+            const query = { email };
+            const user = await userCollection.findOne(query);
+            res.send({ isAdmin: user?.role === 'Buyer'});
+          })
 
 
 
@@ -142,6 +143,7 @@ async function run(){
 
 
 
+
         // Accessories
         app.get('/accessories', async(req, res)=>{
             const query = {};
@@ -165,13 +167,15 @@ async function run(){
         })
         // Category end
 
+
+
+
         // order
         app.post('/orders', async(req, res)=>{
             const orders = req.body;
             const result = await ordersCollection.insertOne(orders);
             res.send(result)
         })
-   
         app.get('/orders', async(req, res)=>{
             const email = req.query.email;
             if(email){
@@ -186,7 +190,6 @@ async function run(){
                 res.send(result);
             }
         })
-
         app.get('/orders', async(req, res)=>{
             const query = { };
             const result = await ordersCollection.find(query).toArray();
