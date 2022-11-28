@@ -77,6 +77,21 @@ async function run(){
             const user = await userCollection.findOne(query);
             res.send({ isAdmin: user?.role === 'Seller'});
           })
+          app.put('/users/seller/:id', async(req, res)=>{
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const options = { upert: true };
+            const updatedDoc = {
+                $set: {
+                    status: 'varified'
+                }
+            }
+            const result = await userCollection.updateOne(filter, updatedDoc, options);
+            res.send(result)
+        })
+
+
+
 
         //   Buyer
         app.get('/users/buyer/:email', async(req, res)=>{
@@ -85,6 +100,7 @@ async function run(){
             const user = await userCollection.findOne(query);
             res.send({ isAdmin: user?.role === 'Buyer'});
           })
+
 
 
 
@@ -103,17 +119,6 @@ async function run(){
             const cameras = await camerasCollection.find(query).toArray();
             res.send(cameras);
         });
-
-        // app.get('/cameras', async(req, res)=>{
-        //     const query = {};
-        //     const cameras =  camerasCollection.find({seller: {$elemMatch: {seller: 'Alam Khan'}}})
-        //     res.send(cameras);
-        // });
-
-
-        // find({awards: {$elemMatch: {award:'National Medal', year:1975}}})
-        // find({seller: {$elemMatch: {seller: 'Alam Khan'}}})
-
         app.post('/cameras', async(req, res)=>{
             const products = req.body;
             const product = {
@@ -128,6 +133,12 @@ async function run(){
             const query = {_id: ObjectId(id)};
             const result = await camerasCollection.findOne(query);
             res.send(result);
+        })
+        app.delete('/cameras/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await camerasCollection.deleteOne(query);
+            res.send(result)
         })
 
 
@@ -152,6 +163,12 @@ async function run(){
             const query = {_id: ObjectId(id)};
             const result = await lensCollection.findOne(query);
             res.send(result);
+        })
+        app.delete('/lens/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await lensCollection.deleteOne(query);
+            res.send(result)
         })
 
 
@@ -178,6 +195,12 @@ async function run(){
             const result = await accessoriesCollection.findOne(query);
             res.send(result);
         })
+        app.delete('/accessories/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await accessoriesCollection.deleteOne(query);
+            res.send(result)
+        })
         // Category end
 
 
@@ -202,6 +225,13 @@ async function run(){
                 const result = await ordersCollection.find(query).toArray();
                 res.send(result);
             }
+        })
+
+        app.delete('/orders/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await ordersCollection.deleteOne(query);
+            res.send(result)
         })
         
      
