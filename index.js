@@ -101,9 +101,6 @@ async function run(){
             res.send({ isAdmin: user?.role === 'Buyer'});
           })
 
-
-
-
         // Category
         app.get('/categories',async (req, res)=>{
             const query = {};
@@ -112,6 +109,7 @@ async function run(){
         });
 
 
+        
 
         // Camera
         app.get('/cameras', async(req, res)=>{
@@ -202,7 +200,6 @@ async function run(){
             res.send(result)
         })
         // Category end
-
 
 
 
