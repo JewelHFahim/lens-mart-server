@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
@@ -19,9 +20,40 @@ async function run(){
     const lensCollection = client.db("lensMart").collection("lens");
     const accessoriesCollection = client.db("lensMart").collection("accessories");
     const ordersCollection = client.db("lensMart").collection("orders");
+    const blogsCollection = client.db("lensMart").collection("blogs");
+
+
+    function verifyJWT(req, res, next){
+      const authHeader = req.headers.authorization;
+      if(!authHeader){
+        return res.status(401).send( {message: 'unauthorized access'} );
+      }
+      const token = authHeader.split(' ')[1];
+      jwt.verify(token, process.env.ACCESS_TOKEN, function(err, decoded){
+        if(err){
+          return res.status(403).send({message: 'forbidden access two'})
+        }
+        req.decoded = decoded;
+        next();
+      })
+    }
 
 
     try{
+
+        // JWT
+        app.get('/jwt', async(req, res)=>{
+            const email = req.query.email;
+            const query = {email: email };
+            const user = await userCollection.findOne(query);
+            if(user){
+              const token = jwt.sign( {email}, process.env.ACCESS_TOKEN, {expiresIn: '1h'} );
+              return res.send({accessToken: token })
+            }
+            res.status(403).send({accessToken: ''})
+          })
+
+
 
         // Users
         app.post('/users', async(req, res)=>{
@@ -202,13 +234,13 @@ async function run(){
         // Category end
 
 
-
         // order
-        app.post('/orders', async(req, res)=>{
+        app.post('/orders', async(req, res)=>{   
             const orders = req.body;
             const result = await ordersCollection.insertOne(orders);
             res.send(result)
         })
+
         app.get('/orders', async(req, res)=>{
             const email = req.query.email;
             if(email){
@@ -231,6 +263,17 @@ async function run(){
             res.send(result)
         })
         
+        app.get('/blogs', async(req, res)=>{
+            const query = {};
+            const blog = await blogsCollection.find(query).toArray();
+            res.send(blog);
+        });
+        app.get('/blogs/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await blogsCollection.findOne(query);
+            res.send(result);
+        })
      
     }
     finally{
@@ -247,3 +290,5 @@ app.get('/', (req, res)=>{
 app.listen(port, (req, res)=>{
     console.log('LensMart-', port);
 })
+
+module.export = app;
